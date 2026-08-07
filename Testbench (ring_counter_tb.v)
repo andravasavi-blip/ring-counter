@@ -1,0 +1,34 @@
+`timescale 1ns/1ps
+
+module ring_counter_tb;
+
+reg clk;
+reg reset;
+wire [3:0] Q;
+
+ring_counter uut (
+    .clk(clk),
+    .reset(reset),
+    .Q(Q)
+);
+
+// Clock generation
+always #5 clk = ~clk;
+
+initial begin
+    clk = 0;
+    reset = 1;
+
+    #10 reset = 0;
+
+    #80;
+
+    $finish;
+end
+
+initial begin
+    $display("Time\tReset\tQ");
+    $monitor("%0t\t%b\t%b", $time, reset, Q);
+end
+
+endmodule
